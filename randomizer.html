@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Uma rolls</title>
+  <style>
+    img {
+      max-width: 300px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      margin: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Uma Rolls</h1>
+  <button onclick="showRandomImage()">Roll For Uma!</button>
+  <div>
+    <img id="randomImage" src="" alt="Random Image" style="display:none;">
+  </div>
+  <audio id="clickSound" src="click.mp3"></audio>
+  <script>
+    // List your image file names here
+    const images = [
+      "images tests/CG_Summer.png",
+      "images tests/Cheval_Grand_29.png",
+      "images tests/DJ_Casual.webp",
+      "images tests/Dream_Journey_29.webp",
+      "images tests/Fenomeno_29.webp",
+      "images tests/Gold_Ship_29.webp",
+      "images tests/Gold_Ship_casual.webp",
+      "images tests/JP_Casual.png",
+      "images tests/Jungle_Pocket_29.png",
+      "images tests/King_Halo_29.webp",
+      "images tests/Loves_Only_You_29.png",
+      "images tests/LOY_Casual.png",
+      "images tests/Matikanetannhauser_29.png",
+      "images tests/Matikanetannhauser_casual.png",
+      "images tests/Meishodotogame.png",
+      "images tests/Meisho_Doto_casual.png",
+      "images tests/Mejiro_Ramonu_29.png",
+      "images tests/MR_Casual.png",
+      "images tests/Nakayama_Festa_Game.png",
+      "images tests/Orfevre_29.png",
+      "images tests/Orfevre_Casual.png",
+      "images tests/Sakurachiyonoogame.png",
+      "images tests/SiL_Casual.png",
+      "images tests/Special_Week_29.png",
+      "images tests/Special_Week_casual.webp",
+      "images tests/Stay_Gold_29.webp",
+      "images tests/Still_in_Love_29.png",
+      "images tests/Super_Creek_29.webp",
+      "images tests/Symboli_Rudolf_29.webp",
+      "images tests/T.M._Opera_O_29.webp",
+      "images tests/Tamamo_Cross_29.webp",
+      "images tests/Tamamo_Cross_casual.webp",
+
+    ];
+
+    function showRandomImage() {
+      const img = document.getElementById('randomImage');
+      const randomIndex = Math.floor(Math.random() * images.length);
+      img.src = images[randomIndex];
+      img.style.display = 'block';
+      document.getElementById('clickSound').play();
+    }
+  </script>
+</body>
+</html>
