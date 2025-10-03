@@ -9,7 +9,6 @@
       background-size: cover;
     }
     img {
-      max-width: 300px;
       border: 2px solid #ccc;
       border-radius: 8px;
       margin: 20px;
@@ -17,6 +16,13 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.10);
       padding: 12px;
       display: block;
+    }
+    img#randomImage {
+      max-width: 320px;
+      max-height: 480px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
     }
     button {
       padding: 10px 20px;
@@ -42,47 +48,123 @@
   <p id="clickCount">Rolls: 0</p>
       <div style="display: flex; align-items: center; gap: 12px; justify-content: flex-start; margin-left: 40px; margin-top: 30px;">
         <button id="rollBtn" onclick="showRandomImage()">Roll For Uma!</button>
-        <img src="rainbow_carats.png" alt="icon" style="width:32px; height:32px; display:inline-block;">
+        <button id="caratBtn" style="background:none; border:none; padding:0; cursor:pointer;">
+          <img src="rainbow_carats.png" alt="icon" style="width:32px; height:32px; display:inline-block;">
+        </button>
       </div>
-  <div>
+      <!-- Effect video overlay -->
+      <div id="effectOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;">
+        <video id="effectVideo" width="480" style="max-width:90vw; max-height:90vh; border-radius:16px; box-shadow:0 8px 32px rgba(0,0,0,0.4);" preload="auto">
+          <source src="effect.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+  <div style="display: flex; align-items: flex-start; gap: 24px;">
     <img id="randomImage" src="" alt="Random Image" style="display:none;">
+    <div id="charInfo" style="display:none; min-width:180px; background:rgba(255,255,255,0.92); border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); padding:16px 20px; font-size:18px; font-weight:bold; color:#333;">
+      <span id="charName"></span>
+    </div>
   </div>
   <audio id="clickSound" src="click.mp3"></audio>
   <script>
     // List your image file names here
     const images = [
-      "images tests/CG_Summer.png",
+      "images tests/Agnes_Tachyon.webp",
+      "images tests/Air_Groove.webp",
+      "images tests/Air_Shakur.webp",
+      "images tests/Almond_Eye_29.webp",
+      "images tests/Aston_Machan.webp",
+      "images tests/Agnes_Tachyon_Alt.webp",
+      "images tests/Biwa_Hayahide.webp",
+      "images tests/Calstone_Light_O_29.webp",
+      "images tests/Ceval_Grand_Summer.png",
       "images tests/Cheval_Grand_29.png",
-      "images tests/DJ_Casual.webp",
+      "images tests/Curren_Chan.webp",
+      "images tests/Daiichi_Ruby.webp",
+      "images tests/Daitaku_Helios.webp",
+      "images tests/Daitaku_Helios_casual.webp",
+      "images tests/Daiwa_Scarlet.webp",
+      "images tests/Dantsu_Flame_29.webp",
+      "images tests/Dream_Journey_Casual.webp",
       "images tests/Dream_Journey_29.webp",
+      "images tests/Duramente_29.webp",
+      "images tests/El_Condor_Pasa_29.webp",
+      "images tests/Espoir_City_29.webp",
       "images tests/Fenomeno_29.webp",
+      "images tests/Fine_Motion.webp",
+      "images tests/Fuji_Kiseki.webp",
+      "images tests/Gentildonna_29.webp",
       "images tests/Gold_Ship_29.webp",
       "images tests/Gold_Ship_casual.webp",
-      "images tests/JP_Casual.png",
+      "images tests/Grass_Wonder_29.webp",
+      "images tests/Haru_Urara_29.webp",
+      "images tests/Hishi_Amazon_29.webp",
+      "images tests/Ikuno_Dictus_29.webp",
+      "images tests/Inari_One_29.webp",
+      "images tests/Ines_Fujin_29.webp",
+      "images tests/Jungle_Pocket_Casual.png",
       "images tests/Jungle_Pocket_29.png",
+      "images tests/Kawakami_Princess_29.webp",
       "images tests/King_Halo_29.webp",
+      "images tests/Kitasan_Black_29.webp",
       "images tests/Loves_Only_You_29.png",
-      "images tests/LOY_Casual.png",
+      "images tests/Loves_Only_You_Casual.png",
+      "images tests/Lucky_Lilac_29.webp",
+      "images tests/Manhattan_Cafe_29.webp",
+      "images tests/Maruzensky_29.webp",
+      "images tests/Marvelous_Sunday_29.webp",
+      "images tests/Matikanefukukitaru_29.webp",
       "images tests/Matikanetannhauser_29.png",
       "images tests/Matikanetannhauser_casual.png",
-      "images tests/Meishodotogame.png",
+      "images tests/Mayano_Top_Gun_29.webp",
+      "images tests/Meisho_Doto.png",
       "images tests/Meisho_Doto_casual.png",
+      "images tests/Mejiro_Mcqueen.webp",
+      "images tests/Mejiro_Ardan_29.webp",
+      "images tests/Mejiro_Dober_29.webp",
+      "images tests/Mejiro_Palmer_29.webp",
       "images tests/Mejiro_Ramonu_29.png",
-      "images tests/MR_Casual.png",
-      "images tests/Nakayama_Festa_Game.png",
+      "images tests/Mejiro_Ryan_29.webp",
+      "images tests/Mihono_Bourbon_29.webp",
+      "images tests/Mr._C.B._29.webp",
+      "images tests/Mejiro_Ramonu_Casual.png",
+      "images tests/Nakayama_Festa.png",
+      "images tests/Narita_Brian_29.webp",
+      "images tests/Narita_Taishin_29.webp",
+      "images tests/Narita_Top_Road_29.webp",
+      "images tests/Nice_Nature.webp",
+      "images tests/Nishino_Flower.webp",
+      "images tests/Oguri_Cap_29.webp",
+      "images tests/Oguri_Cap_casual.webp",
       "images tests/Orfevre_29.png",
       "images tests/Orfevre_Casual.png",
-      "images tests/Sakurachiyonoogame.png",
-      "images tests/SiL_Casual.png",
+      "images tests/Rice_Shower_29.webp",
+      "images tests/Sakura_Chiyono_O.png",
+      "images tests/Sakura_Bakushin_O_29.webp",
+      "images tests/Satono_Diamond_29.webp",
+      "images tests/Seeking_the_Pearl_29.webp",
+      "images tests/Seiun_Sky.webp",
+      "images tests/Silence_Suzuka.webp",
+      "images tests/Still_in_Love_Casual.png",
+      "images tests/Sounds_of_Earth_29.webp",
       "images tests/Special_Week_29.png",
       "images tests/Special_Week_casual.webp",
       "images tests/Stay_Gold_29.webp",
       "images tests/Still_in_Love_29.png",
       "images tests/Super_Creek_29.webp",
+      "images tests/Sweep_Tosho.webp",
+      "images tests/Super_Creek_casual.webp",
+      "images tests/Symboli_Kris_S_29.webp",
       "images tests/Symboli_Rudolf_29.webp",
       "images tests/T.M._Opera_O_29.webp",
+      "images tests/Taiki_Shuttle_29.webp",
       "images tests/Tamamo_Cross_29.webp",
       "images tests/Tamamo_Cross_casual.webp",
+      "images tests/Tokai_Teio.webp",
+      "images tests/Twin_Turbo_29.webp",
+      "images tests/Vivlos_29.webp",
+      "images tests/Vodka_29.webp",
+      "images tests/Winning_Ticket_29.webp",
     ];
 
     // Counter and reset logic
@@ -125,13 +207,25 @@
       // If this is the first roll, start/reset the timer
       if (count === 0) {
         localStorage.setItem(RESET_KEY, Date.now());
+        updateResetTimer();
+        document.getElementById('reset-timer').style.display = 'block';
       }
 
-      const img = document.getElementById('randomImage');
-      const randomIndex = Math.floor(Math.random() * images.length);
-      img.src = images[randomIndex];
-      img.style.display = 'block';
-      document.getElementById('clickSound').play();
+
+  const img = document.getElementById('randomImage');
+  const charInfo = document.getElementById('charInfo');
+  const charNameSpan = document.getElementById('charName');
+  const randomIndex = Math.floor(Math.random() * images.length);
+  const imgPath = images[randomIndex];
+  img.src = imgPath;
+  img.style.display = 'block';
+  document.getElementById('clickSound').play();
+
+  // Extract character name from filename
+  let name = imgPath.split('/').pop().replace(/[_-]/g, ' ').replace(/\.[^.]+$/, '');
+  name = name.replace(/\s*\d+$/, ''); // Remove trailing numbers
+  charNameSpan.textContent = `You got ${name}!`;
+  charInfo.style.display = 'block';
 
       count++;
       localStorage.setItem(COUNTER_KEY, count);
@@ -168,6 +262,27 @@
         resetCounter();
       }
     });
+    // Rainbow carat button effect
+    const caratBtn = document.getElementById('caratBtn');
+    const effectOverlay = document.getElementById('effectOverlay');
+    const effectVideo = document.getElementById('effectVideo');
+    if (caratBtn && effectOverlay && effectVideo) {
+      caratBtn.addEventListener('click', function() {
+        effectOverlay.style.display = 'flex';
+        effectVideo.currentTime = 0;
+        effectVideo.play();
+      });
+      effectVideo.addEventListener('ended', function() {
+        effectOverlay.style.display = 'none';
+      });
+      // Optional: click overlay to close
+      effectOverlay.addEventListener('click', function(e) {
+        if (e.target === effectOverlay) {
+          effectVideo.pause();
+          effectOverlay.style.display = 'none';
+        }
+      });
+    }
   </script>
 </body>
 </html>
